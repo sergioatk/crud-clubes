@@ -1,0 +1,23 @@
+<h1>Bienvenido a la seccion de equipos!</h1>
+<h3>Desde aca podras agregar o eliminar tu lista de equipos</h3>
+
+
+{{#if data.equipos}}
+
+    <h5>Lista Equipos</h5>
+
+    <ul>
+
+        {{#each data.equipos as |item|}}
+
+        <li>Equipo {{nombre}}</li>
+
+        {{/each}}
+
+    </ul>
+
+
+    <p></p>
+
+
+{{/if}}
