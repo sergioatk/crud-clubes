@@ -1,6 +1,33 @@
 <h1>Bienvenido a la seccion de equipos!</h1>
 <h3>Desde aca podras agregar o eliminar tu lista de equipos</h3>
 
+<div class="container">
+    <div class="row">
+        <div class="col-10">
+            <form action="/equipos" method="POST" enctype="multipart/form-data">
+                <label for="nombre">Nombre: </label>
+                <input type="text" name="nombre" id="nombre">
+
+                <label for="pais">Pais: </label>
+                <input type="text" name="pais" id="pais">
+
+                <label for="imagen">Imagen: </label>
+                <input type="file" name="imagen" id="imagen">
+
+                <input type="submit" value="Subir" />
+            </form>
+        </div>
+    </div>
+</div>
+
+{{#if data.mensaje}}
+<p>{{data.mensaje}}</p>
+
+<img src="/imagenes/{{data.nombreArchivo}}" />
+{{/if}}
+<!-- enctype="multipart/form-data" es lo que nos permite subir un archivo al servidor -->
+
+      
 
 {{#if data.equipos}}
 
@@ -17,7 +44,7 @@
     </ul>
 
 
-    <p></p>
-
+{{else}}
+    <h5>No hay equipos en la lista, podes agregar equipos a traves del formulario en la pagina superior!</h5>
 
 {{/if}}
