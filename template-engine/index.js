@@ -1,5 +1,5 @@
-const Equipo = require('./modulos/Equipo'); //nombre, id, pais, url img
-const equipoEsValido = require('./modulos/funciones/equipoEsValido')
+const Equipo = require('../modulos/Equipo'); //nombre, id, pais, url img
+const equipoEsValido = require('../modulos/funciones/equipoEsValido')
 const express = require('express');
 const multer = require('multer');
 const fs = require('fs');
@@ -9,12 +9,13 @@ const app = express();
 const exphbs = require('express-handlebars');
 const hbs = exphbs.create();
 
+//const static = path.join(__dirname, '/uploads/imagenes')
 
-app.use(express.static(__dirname))
+app.use(express.static(__dirname));
 
-const storage = multer.diskStorage({
+let storage = multer.diskStorage({
     destination: (req, file, cb) => {
-      cb(null, path.join(__dirname, `/uploads/`))
+      cb(null, `${__dirname}/template-engine/uploads/images`)
     },
     filename: (req, file, cb) => {
       
@@ -35,11 +36,6 @@ const { send } = require('process');
 const equipos = [];
 
 
-
-// app.use(multer({
-//     storage
-// }))
-
 app.use(express.json());
 
 app.use(express.urlencoded({ extended: true }));
@@ -53,6 +49,7 @@ app.set('view engine', 'handlebars');
 
 
 app.get('/', (req, res) => {
+
 
     res.render('home', {
         layout: 'boiler',
@@ -86,14 +83,7 @@ app.post('/equipos', upload.single('imagen'), (req, res) => {
 
     console.log(nuevoEquipo);
     console.log(req.file);
-  
-        
-    
-
-    //res.render()
-   // console.log(req.body)
-    //console.log(req.file)
-    // console.log(res)
+ 
     res.send('Equipo agregado exitosamente')
 })
 
