@@ -15,11 +15,11 @@ app.use(express.static(__dirname));
 
 let storage = multer.diskStorage({
     destination: (req, file, cb) => {
-      cb(null, `${__dirname}/template-engine/uploads/images`)
+      cb(null, `${__dirname}/uploads/images`)
     },
     filename: (req, file, cb) => {
       
-      cb(null, file.originalname)
+      cb(null, `${Date.now()}--${file.originalname}`)
     }
 })
 
@@ -39,9 +39,6 @@ const equipos = [];
 app.use(express.json());
 
 app.use(express.urlencoded({ extended: true }));
-
-
-
 
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
@@ -73,18 +70,22 @@ app.get('/equipos', (req, res) => {
     
 });
 
+function asignarId(arr) {
+
+}
 
 app.post('/equipos', upload.single('imagen'), (req, res) => {
     
-    const { nombre, id, pais, urlImg } = req.body
+    const { nombre, pais } = req.body
+    const urlImg = path.join(__dirname, req.file.filename);
 
-    const nuevoEquipo = new Equipo(nombre, id, pais, urlImg);
+    const nuevoEquipo = new Equipo(nombre, pais, urlImg);
 
 
-    console.log(nuevoEquipo);
-    console.log(req.file);
+    equipos.push(nuevoEquipo);
+
  
-    res.send('Equipo agregado exitosamente')
+    res.send(`Cargaste correctamente el siguiente equipo: Nombre ${nombre}, Pais: ${pais}`)
 })
 
 app.listen(PUERTO);
