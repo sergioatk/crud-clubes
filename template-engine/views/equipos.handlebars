@@ -1,6 +1,33 @@
-<h1>Bienvenido a la seccion de equipos!</h1>
-<h3>Desde aca podras agregar o eliminar tu lista de equipos</h3>
+<h1>¡Bienvenido a la seccion de equipos!</h1>
+<h3>Desde acá podras agregar, editar o eliminar equipos de tu lista</h3>
 
+<div class="container">
+    <div class="row">
+        <div class="col-10">
+            <form action="/api/equipos" method="POST" enctype="multipart/form-data">
+                <label for="nombre">Nombre: </label>
+                <input type="text" name="nombre" id="nombre">
+
+                <label for="pais">País: </label>
+                <input type="text" name="pais" id="pais">
+
+                <label for="imagen">Imagen: </label>
+                <input type="file" name="imagen" id="imagen">
+
+                <input type="submit" value="Subir" />
+            </form>
+        </div>
+    </div>
+</div>
+
+{{#if data.mensaje}}
+<p>{{data.mensaje}}</p>
+
+<img src="/imagenes/{{data.nombreArchivo}}" />
+{{/if}}
+<!-- enctype="multipart/form-data" es lo que nos permite subir un archivo al servidor -->
+
+      
 
 {{#if data.equipos}}
 
@@ -10,14 +37,38 @@
 
         {{#each data.equipos as |item|}}
 
-        <li>Equipo {{nombre}}</li>
+        <div class="row text-center equipo">
+            <div class="col">
+                <img src="{{imagen}}" alt="">
+            </div>
+            <div class="col">
+                <h1 class="display-5"><strong>Nombre:</strong> {{nombre}} <strong>País:</strong>{{pais}}</h1>
+            </div>
+            <div class="col">
+                <button type="button" class="btn btn-outline-warning boton">Editar</button>
+            </div>
+            <div class="col align-middle">
+                <form action="/eliminar" method="POST" enctype="multipart/form-data">
+                 <button type="submit" class="btn btn-outline-danger boton" name="eliminar-{{nombre}}">Eliminar</button>
+                 </form>
+                
+            </div>
+        </div>
 
+    <div class="row">
+
+    </div>
+
+
+
+       
+        
         {{/each}}
 
     </ul>
 
 
-    <p></p>
-
+{{else}}
+    <h5>No hay equipos en la lista, podés agregar equipos a través del formulario en la parte superior</h5>
 
 {{/if}}

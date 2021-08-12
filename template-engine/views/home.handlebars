@@ -1,3 +1,32 @@
-<h1>{{data.titulo}}</h1>
-<h3>{{data.subTitulo}}</h3>
-<p>{{data.equipos}}</p>
+<h1 class="display-3 text-center">{{data.titulo}}</h1>
+<h3 class="display-5 text-center">{{data.subTitulo}}</h1>
+<p class="text-center">Agregá, quitá o editá equipos desde la pestaña Equipos</p>
+
+  <div class="container lista-simple">
+
+  
+      <div class="row center-block">
+    <div class="col text-center">
+        <ul class="list-group">       
+{{#each data.equipos as |equipo|}}
+  
+
+    <div class="col">
+        <li class="list-group-item"> <strong>Equipo:</strong> {{equipo.nombre}} <strong>País:</strong> {{equipo.pais}}</li>
+    </div>
+
+    <div class="col">
+        <img src="{{equipo.imagen}}" alt="">
+        
+    </div>
+            
+          
+        
+
+{{/each}}
+</ul>
+    </div>
+</div>
+
+</div>
+
