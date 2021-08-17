@@ -2,22 +2,28 @@
 <h3>Desde acá podras agregar, editar o eliminar equipos de tu lista</h3>
 
 <div class="container">
-    <div class="row">
-        <div class="col-10">
-            <form action="/api/equipos" method="POST" enctype="multipart/form-data">
-                <label for="nombre">Nombre: </label>
-                <input type="text" name="nombre" id="nombre">
 
-                <label for="pais">País: </label>
-                <input type="text" name="pais" id="pais">
-
-                <label for="imagen">Imagen: </label>
-                <input type="file" name="imagen" id="imagen">
-
-                <input type="submit" value="Subir" />
-            </form>
+    <form action="/api/equipos" method="POST" enctype="multipart/form-data">
+        <div class="row">
+            <div class="col-sm-5">
+            <input required type="text" type="text" name="nombre" id="nombre" class="form-control formulario" placeholder="Nombre equipo...">
+            </div>
+            <div class="col-sm-5">
+            <select class="form-control formulario" name="pais" id="pais">
+                <option>Inglaterra</option>
+            </select>
+            </div>
         </div>
-    </div>
+        <div class="form-row">
+            <div class="col-sm-5">
+                <input required type="file" name="imagen" id="imagen" class="formulario">
+            </div>
+            <div class="col-sm-5">
+                <button class="btn btn-primary formulario">Enviar</button>
+            </div>
+        </div>
+    </form>
+    
 </div>
 
 {{#if data.mensaje}}
