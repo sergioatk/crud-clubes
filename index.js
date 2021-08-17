@@ -1,5 +1,5 @@
-const Equipo = require('../modulos/Equipo'); //nombre, id, pais, url img
-const equipoEsValido = require('../modulos/funciones/equipoEsValido')
+const Equipo = require('./src/Equipo'); //nombre, id, pais, url img
+//const equipoEsValido = require('/modulos/funciones/equipoEsValido')
 const express = require('express');
 const multer = require('multer');
 const fs = require('fs');
@@ -9,11 +9,11 @@ const app = express();
 const exphbs = require('express-handlebars');
 const hbs = exphbs.create();
 
-app.use(express.static(path.join(__dirname, '/uploads/images')));
-app.use(express.static(path.join(__dirname, '../src')));
+app.use(express.static(path.join(__dirname, '/uploads/img')));
+app.use(express.static(path.join(__dirname, '/src')));
 let storage = multer.diskStorage({
     destination: (req, file, cb) => {
-      cb(null, `${__dirname}/uploads/images`)
+      cb(null, `${__dirname}/uploads/img`)
     },
     filename: (req, file, cb) => {
       
