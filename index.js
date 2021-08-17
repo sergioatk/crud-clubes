@@ -9,11 +9,11 @@ const app = express();
 const exphbs = require('express-handlebars');
 const hbs = exphbs.create();
 
-app.use(express.static(path.join(__dirname, '/uploads/img')));
+app.use(express.static(path.join(__dirname, '/uploads')));
 app.use(express.static(path.join(__dirname, '/src')));
 let storage = multer.diskStorage({
     destination: (req, file, cb) => {
-      cb(null, `${__dirname}/uploads/img`)
+      cb(null, `${__dirname}/uploads`)
     },
     filename: (req, file, cb) => {
       
