@@ -37,20 +37,47 @@
 
         {{#each data.equipos as |item|}}
 
-        <div class="row text-center equipo">
+        <div class="row text-center equipo {{nombre}}">
             <div class="col">
                 <img src="{{imagen}}" alt="">
             </div>
             <div class="col">
                 <h1 class="display-5"><strong>Nombre:</strong> {{nombre}} <strong>País:</strong>{{pais}}</h1>
             </div>
+            <div class="col" id="ejemplo-modal">
+                <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                        Editar / Eliminar Equipo
+                        </button>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                ...
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary">Save changes</button>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+            </div>
             <div class="col">
-                <button type="button" class="btn btn-outline-warning boton">Editar</button>
+                <button type="button" class="btn btn-outline-warning boton-editar" data-nombre="{{nombre}}">Editar</button>
             </div>
             <div class="col align-middle">
-                <form action="/eliminar" method="POST" enctype="multipart/form-data">
-                 <button type="submit" class="btn btn-outline-danger boton" name="eliminar-{{nombre}}">Eliminar</button>
-                 </form>
+                
+                 <button type="submit" class="btn btn-outline-danger boton-eliminar" data-nombre="{{nombre}}">Eliminar</button>
+                 
                 
             </div>
         </div>

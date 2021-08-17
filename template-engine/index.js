@@ -10,7 +10,7 @@ const exphbs = require('express-handlebars');
 const hbs = exphbs.create();
 
 app.use(express.static(path.join(__dirname, '/uploads/images')));
-
+app.use(express.static(path.join(__dirname, '../src')));
 let storage = multer.diskStorage({
     destination: (req, file, cb) => {
       cb(null, `${__dirname}/uploads/images`)
@@ -92,7 +92,7 @@ app.put('/api/equipos/:nombreEquipo', (req, res) => {
     const { nombreEquipo } = req.params;
     const index = equipos.findIndex(e => e.nombre === nombreEquipo);
     const nuevoNombre = req.body.nombre;
-    const nuevoPais = req.body.pais;
+    
 
     console.log(`entramos a put`)
 
@@ -102,7 +102,7 @@ app.put('/api/equipos/:nombreEquipo', (req, res) => {
     }
 
     equipos[index].nombre = nuevoNombre;
-    equipos[index].pais = nuevoPais;
+    
     res.status(202).send(`el equipo ${nombreEquipo}, paso a llamarse ${nuevoNombre} correctamente, gracias por usar nuestro servicio.`)
     
 })
