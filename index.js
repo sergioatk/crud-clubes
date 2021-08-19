@@ -53,14 +53,27 @@ app.get('/equipos', (req, res) => {
     
 });
 
+function equipoExiste(nombre, listaEquipos) {
+    const existe = listaEquipos.some(equipo => equipo.nombre === nombre);
+    
+    return existe;
+}
 
 app.post('/api/equipos', upload.single('imagen'), (req, res) => {
+    
     
     const urlImg = req.file.filename;
     const { nombre, pais } = req.body;
     const nuevoEquipo = new Equipo(nombre, pais, urlImg);
-    equipos.push(nuevoEquipo);
-    res.send('Equipo cargado correctamente');
+    if (!equipoExiste(nombre, equipos)) {
+        console.log('el equipo no existia, pero ahora se cargo correctamente');
+        equipos.push(nuevoEquipo);
+        res.status(200);
+        res.send('Equipo cargado correctamente');
+    }
+    res.status(400);
+    res.send(`El equipo ${nombre} ya existe, por lo que no podes agregarlo nuevamente`)
+    
 })
 
 

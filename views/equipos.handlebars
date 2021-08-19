@@ -1,29 +1,44 @@
-<h1>¡Bienvenido a la seccion de equipos!</h1>
-<h3>Desde acá podras agregar, editar o eliminar equipos de tu lista</h3>
+<h1 class="display-3">¡Bienvenido a la seccion de equipos!</h1>
+<h5>Desde acá podras agregar, editar o eliminar equipos de tu lista</h3>
 
 <div class="container">
 
     <form action="/api/equipos" method="POST" enctype="multipart/form-data">
+
         <div class="row">
-            <div class="col-sm-5">
-            <input required type="text" type="text" name="nombre" id="nombre" class="form-control formulario" placeholder="Nombre equipo...">
-            </div>
-            <div class="col-sm-5">
-            <select class="form-control formulario" name="pais" id="pais">
-                <option>Inglaterra</option>
-            </select>
+            <div class="col">
+                <input required type="text" type="text" name="nombre" id="nombre" class="form-control formulario"
+                    placeholder="Nombre equipo...">
             </div>
         </div>
-        <div class="form-row">
-            <div class="col-sm-5">
+        <div class="row">
+            <div class="col">
+                <select class="form-control formulario" name="pais" id="pais">
+                    <option>Inglaterra</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
                 <input required type="file" name="imagen" id="imagen" class="formulario">
             </div>
-            <div class="col-sm-5">
-                <button class="btn btn-primary formulario">Enviar</button>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <button type="submit" class="btn btn-primary formulario ">Enviar</button>
             </div>
         </div>
+
+
+
+        <div class="row justify-content-center text-center">
+
+
+        </div>
     </form>
-    
+
 </div>
 
 {{#if data.mensaje}}
@@ -33,75 +48,51 @@
 {{/if}}
 <!-- enctype="multipart/form-data" es lo que nos permite subir un archivo al servidor -->
 
-      
+
 
 {{#if data.equipos}}
 
-    <h5>Lista Equipos</h5>
+<hr>
 
-    <ul>
+<h5 class="lista">Lista Equipos</h5>
 
-        {{#each data.equipos as |item|}}
+<ul id="lista-equipos">
 
-        <div class="row text-center equipo {{nombre}}">
-            <div class="col">
-                <img src="{{imagen}}" alt="">
-            </div>
-            <div class="col">
-                <h1 class="display-5"><strong>Nombre:</strong> {{nombre}} <strong>País:</strong>{{pais}}</h1>
-            </div>
-            <div class="col" id="ejemplo-modal">
-                <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                        Editar / Eliminar Equipo
-                        </button>
+    {{#each data.equipos as |item|}}
 
-                        <!-- Modal -->
-                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                ...
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary">Save changes</button>
-                            </div>
-                            </div>
-                        </div>
-                        </div>
-            </div>
-            <div class="col">
-                <button type="button" class="btn btn-outline-warning boton-editar" data-nombre="{{nombre}}">Editar</button>
-            </div>
-            <div class="col align-middle">
-                
-                 <button type="submit" class="btn btn-outline-danger boton-eliminar" data-nombre="{{nombre}}">Eliminar</button>
-                 
-                
-            </div>
+    <div class="row text-center equipo {{nombre}}">
+        <div class="col">
+            <img src="{{imagen}}" alt="">
+        </div>
+        <div class="col">
+            <h1 class="display-5"><strong>Nombre:</strong> {{nombre}} <strong>País:</strong>{{pais}}</h1>
         </div>
 
-    <div class="row">
+        <div class="col7">
+            <button type="button" class="btn btn-outline-warning visibilidad" id="boton-editar-{{nombre}}"
+                data-nombre="{{nombre}}">Editar</button>
 
+            <span id="seccion-editar-{{nombre}}" data-nombre="{{nombre}}" class="oculto">
+                <input id="input-editar-{{nombre}}" type="text"> <button id="enviar-edicion-{{nombre}}"
+                    class="btn btn-primary enviar-edicion">Enviar</button>
+            </span>
+
+        </div>
+        <div class="col align-middle">
+
+            <button type="submit" class="btn btn-outline-danger eliminar" data-nombre="{{nombre}}">Eliminar</button>
+
+
+        </div>
     </div>
 
 
+    {{/each}}
 
-       
-        
-        {{/each}}
-
-    </ul>
+</ul>
 
 
 {{else}}
-    <h5>No hay equipos en la lista, podés agregar equipos a través del formulario en la parte superior</h5>
+<h5>No hay equipos en la lista, podés agregar equipos a través del formulario en la parte superior</h5>
 
 {{/if}}
