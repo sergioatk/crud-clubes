@@ -1,106 +1,101 @@
-function eliminarEquipo(equipoABorrar) {
-    
-    fetch(`http://localhost:8080/borrarequipo/${equipoABorrar}`, {
-    method: 'DELETE',
-    
-})
-.then(res => res.text()) // or res.json()
-.then(res => console.log(`res es ${res}`))
+const $listaEquipos = document.querySelector('#lista-equipos');
 
-window.location.href = "http://localhost:8080/equipos";
+$listaEquipos.onclick = (e) => {
+    const elemento = e.target;
+
+    if (elemento.classList.contains('visibilidad')) {
+        manejarVisibilidad(elemento.dataset.nombre);
+    }
+
+    if (elemento.classList.contains('eliminar')) {
+        const equipoAEliminar = elemento.dataset.nombre;
+        eliminarEquipo(equipoAEliminar);
+    }
+
+    if (elemento.classList.contains('enviar-edicion')) {
+        const arrayData = obtenerNuevaData(elemento);
+        editarNombreEquipo(arrayData)
+    }
+
+    
+
 }
 
-function editarNombreEquipo(equipoAEditar, nuevaData) {
-    fetch(`http://localhost:8080/api/equipos/${equipoAEditar}`, {
+function eliminarEquipo(equipoAEliminar) {
     
-    method: 'PUT', // Method itself
-    headers: {
-        'Content-type': 'application/json; charset=UTF-8', // Indicates the content 
-    },
-    body: JSON.stringify(nuevaData) // We send data in JSON format
+    fetch(`http://localhost:8080/borrarequipo/${equipoAEliminar}`, {
+    method: 'DELETE'
+
+})
+
+    window.location.href = "http://localhost:8080/equipos";
+}
+
+function editarNombreEquipo(arrayData) {
+    const [equipo, nuevoNombre] = arrayData;
+    fetch(`http://localhost:8080/api/equipos/${equipo}`, {
+
+        method: 'PUT',
+        headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+        },
+        body: JSON.stringify(nuevoNombre)
     });
 
     window.location.href = "http://localhost:8080/equipos";
 }
 
-const $botonEliminar = document.querySelectorAll('.boton-eliminar');
+function obtenerNuevaData(botonEnviarEdicion) {
+    const padre = botonEnviarEdicion.parentNode;
+    const nombreEquipo = padre.dataset.nombre;
+    const nuevoNombre = padre.querySelector(`input`).value;
+    const nuevaData = [
+        nombreEquipo, { 'nombre': nuevoNombre }
+    ]
 
-$botonEliminar.forEach(equipo => {
-    equipo.onclick = function() {
-        eliminarEquipo(equipo.dataset.nombre)
-    }
-    
-})
-
-const $botonEditar = document.querySelectorAll('.boton-editar');
-
-$botonEditar.forEach(botonEditar => {
-    botonEditar.onclick = () => {
-
-        const $camposNuevaData = crearCamposParaEditar(botonEditar.dataset.nombre)
-        const $nodoEquipo = botonEditar.parentNode.parentNode;
-        $nodoEquipo.appendChild($camposNuevaData);
-
-
-        // const $botonEnviarCambios = document.querySelector(`#enviar-cambios-${equipo.dataset.nombre}`)
-
-
-        // $botonEnviarCambios.onclick = enviarCambios(equipo.dataset.nombre);
-        
-
-        
-    }
-})
-
-
-function crearCamposParaEditar(equipo) {
-
-    if (document.querySelector(`.contenedor-editar-${equipo}`)) {
-        return;
-    }
-
-    const $contenedor = document.createElement('div');
-    $contenedor.className = `contenedor-editar-${equipo}`
-
-    const $labelNuevoNombre = document.createElement('label');
-    $labelNuevoNombre.textContent = 'Nuevo nombre de equipo'
-    $labelNuevoNombre.setAttribute('for', `editar-${equipo}`)
-
-    const $nuevoNombre = document.createElement('input')
-    $nuevoNombre.setAttribute('type', 'text');
-    $nuevoNombre.classList.add('editar')
-    $nuevoNombre.id = `editar-${equipo}`;
-
-    $botonEnviarCambios = document.createElement('button');
-    $botonEnviarCambios.dataset.nombre = equipo;
-    $botonEnviarCambios.id = `enviar-cambios-${equipo}`
-    $botonEnviarCambios.className = 'btn btn-danger'
-    $botonEnviarCambios.textContent = 'enviar datos!';
-    
-
-    $botonEnviarCambios.addEventListener("click", enviarCambios);
-
-    $contenedor.appendChild($labelNuevoNombre);
-    $contenedor.appendChild($nuevoNombre);
-    $contenedor.appendChild($botonEnviarCambios);
-
-    return $contenedor;
-
-    
+    return nuevaData;
 }
 
+// function manejarBorrar(nombreEquipo) {
+//     console.log(nombreEquipo);
+// }
+
+
+// function manejarEditar(nombreEquipo) {
 
 
 
-function enviarCambios() {
-    const nombreActual = this.dataset.nombre;
-    const nuevoNombre = this.parentNode.querySelector('input').value
-    ;
 
-    const nuevaData = {
-        'nombre': nuevoNombre
+//     const nuevoNombre = document.querySelector(`#input-editar-${nombreEquipo}`).value
+
+//     const nuevaData = {
+//         'nombre': nuevoNombre
+//     }
+
+//     const $botonEnviarEdicion = document.querySelector(`#enviar-edicion-${nombreEquipo}`);
+
+//     //$botonEnviarEdicion.onclick = editarNombreEquipo(nombreEquipo, nuevaData);
+
+//     return nuevaData;
+
+
+
+// }
+
+
+
+function manejarVisibilidad(nombreEquipo) {
+    const idABuscar = `seccion-editar-${nombreEquipo}`
+    const $seccionEditarEquipo = document.querySelector(`#${idABuscar}`)
+    const $botonEditarEquipo = document.querySelector(`#boton-editar-${nombreEquipo}`);
+    const $inputEditarEquipo = document.querySelector(`#input-editar-${nombreEquipo}`);
+
+    if ($seccionEditarEquipo.classList.contains('oculto')) {
+        $seccionEditarEquipo.classList.remove('oculto');
+        $botonEditarEquipo.textContent = 'Cerrar';
+    } else {
+        $seccionEditarEquipo.classList.add('oculto');
+        $botonEditarEquipo.textContent = 'Editar';
+        $inputEditarEquipo.value = '';
     }
-    console.log(`el nombre actual es ${nombreActual} y el nuevo nombre sera ${nuevoNombre}`)
-
-    editarNombreEquipo(nombreActual, nuevaData)
- }
+}
