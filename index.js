@@ -72,12 +72,12 @@ app.post('/api/equipos', upload.single('imagen'), (req, res) => {
     const nuevoEquipo = new Equipo(nombre, pais, urlImg, idEquipo);
     
     if (!equipoExiste(nombre, equipos)) {
-        console.log('el equipo no existia, pero ahora se cargo correctamente');
-        equipos.push(nuevoEquipo);
         res.status(200);
-        res.send('Equipo cargado correctamente');
+        equipos.push(nuevoEquipo);
+        res.redirect('http://localhost:8080/equipos');  
     }
     res.status(400);
+    
     res.send(`El equipo ${nombre} ya existe, por lo que no podes agregarlo nuevamente`)
     
 })
