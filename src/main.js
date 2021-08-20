@@ -4,7 +4,7 @@ $listaEquipos.onclick = (e) => {
     const elemento = e.target;
 
     if (elemento.classList.contains('visibilidad')) {
-        manejarVisibilidad(elemento.dataset.nombre);
+        manejarVisibilidad(elemento.dataset.id);
     }
 
     if (elemento.classList.contains('eliminar')) {
@@ -13,17 +13,16 @@ $listaEquipos.onclick = (e) => {
     }
 
     if (elemento.classList.contains('enviar-edicion')) {
-        const arrayData = obtenerNuevaData(elemento);
+        const arrayData = obtenerNuevaData(elemento, elemento.dataset.id);
         editarNombreEquipo(arrayData)
     }
 }
 
-function obtenerNuevaData(botonEnviarEdicion) {
+function obtenerNuevaData(botonEnviarEdicion, idEquipoAEditar) {
     const padre = botonEnviarEdicion.parentNode;
-    const nombreEquipo = padre.dataset.nombre;
     const nuevoNombre = padre.querySelector(`input`).value;
     const nuevaData = [
-        nombreEquipo, { 'nombre': nuevoNombre }
+        idEquipoAEditar, { 'nombre': nuevoNombre }
     ]
 
     return nuevaData;
@@ -40,8 +39,8 @@ function eliminarEquipo(idEquipoAEliminar) {
 }
 
 function editarNombreEquipo(arrayData) {
-    const [equipo, nuevoNombre] = arrayData;
-    fetch(`http://localhost:8080/api/equipos/${equipo}`, {
+    const [idEquipoAEditar, nuevoNombre] = arrayData;
+    fetch(`http://localhost:8080/api/equipos/${idEquipoAEditar}`, {
 
         method: 'PUT',
         headers: {
@@ -57,11 +56,11 @@ function editarNombreEquipo(arrayData) {
 
 
 
-function manejarVisibilidad(nombreEquipo) {
-    const idABuscar = `seccion-editar-${nombreEquipo}`
+function manejarVisibilidad(idEquipo) {
+    const idABuscar = `seccion-editar-${idEquipo}`
     const $seccionEditarEquipo = document.querySelector(`#${idABuscar}`)
-    const $botonEditarEquipo = document.querySelector(`#boton-editar-${nombreEquipo}`);
-    const $inputEditarEquipo = document.querySelector(`#input-editar-${nombreEquipo}`);
+    const $botonEditarEquipo = document.querySelector(`#boton-editar-${idEquipo}`);
+    const $inputEditarEquipo = document.querySelector(`#input-editar-${idEquipo}`);
 
     if ($seccionEditarEquipo.classList.contains('oculto')) {
         $seccionEditarEquipo.classList.remove('oculto');

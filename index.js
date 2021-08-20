@@ -106,20 +106,22 @@ app.get('/api/lista-equipos', (req, res) => {
     res.status(200).json(equipos);
 })
 
-app.put('/api/equipos/:nombreEquipo', (req, res) => {
+app.put('/api/equipos/:idEquipo', (req, res) => {
 
-    const { nombreEquipo } = req.params;
-    const index = equipos.findIndex(e => e.nombre === nombreEquipo);
+    const { idEquipo } = req.params;
+    const index = equipos.findIndex(e => e.id === idEquipo);
     const nuevoNombre = req.body.nombre;
 
     if (index < 0) {
-        res.status(404).send(`No encontramos a ${nombreEquipo} en nuestra base de datos, intentá con un equipo registrado.`);
+        res.status(404).send(`No encontramos a ${nuevoNombre} en nuestra base de datos, intentá con un equipo registrado.`);
         return;
     }
 
+    res.status(202).send(`El equipo ${equipos[index]}, pasó a llamarse ${nuevoNombre} correctamente, ¡gracias por usar nuestro servicio!`)
+
+    
     equipos[index].nombre = nuevoNombre;
     
-    res.status(202).send(`El equipo ${nombreEquipo}, pasó a llamarse ${nuevoNombre} correctamente, ¡gracias por usar nuestro servicio!`)
     
 })
 
