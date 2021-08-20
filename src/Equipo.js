@@ -1,9 +1,10 @@
 class Equipo {
 
-    constructor(nombre, pais, urlImagen) {
+    constructor(nombre, pais, urlImagen, id) {
         this.nombre = nombre;
         this.pais = pais;
         this.imagen = urlImagen
+        this.id = id;
     }
 }
 

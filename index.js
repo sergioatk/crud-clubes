@@ -1,13 +1,15 @@
 const Equipo = require('./src/Equipo'); //nombre, id, pais, url img
-//const equipoEsValido = require('/modulos/funciones/equipoEsValido')
+const { v4: uuidv4 } = require('uuid');
 const express = require('express');
 const multer = require('multer');
 const fs = require('fs');
 const path = require('path');
-const PUERTO = 8080;
+const PUERTO = process.env.PORT || 8080;
 const app = express();
 const exphbs = require('express-handlebars');
 const hbs = exphbs.create();
+
+console.log(uuidv4());
 
 app.use(express.static(path.join(__dirname, '/uploads')));
 app.use(express.static(path.join(__dirname, '/src')));
@@ -53,6 +55,8 @@ app.get('/equipos', (req, res) => {
     
 });
 
+
+
 function equipoExiste(nombre, listaEquipos) {
     const existe = listaEquipos.some(equipo => equipo.nombre === nombre);
     
@@ -64,7 +68,9 @@ app.post('/api/equipos', upload.single('imagen'), (req, res) => {
     
     const urlImg = req.file.filename;
     const { nombre, pais } = req.body;
-    const nuevoEquipo = new Equipo(nombre, pais, urlImg);
+    const idEquipo = uuidv4();
+    const nuevoEquipo = new Equipo(nombre, pais, urlImg, idEquipo);
+    
     if (!equipoExiste(nombre, equipos)) {
         console.log('el equipo no existia, pero ahora se cargo correctamente');
         equipos.push(nuevoEquipo);
@@ -105,18 +111,15 @@ app.put('/api/equipos/:nombreEquipo', (req, res) => {
     const { nombreEquipo } = req.params;
     const index = equipos.findIndex(e => e.nombre === nombreEquipo);
     const nuevoNombre = req.body.nombre;
-    
-
-    console.log(`entramos a put`)
 
     if (index < 0) {
-        res.status(404).send(`no encontramos a ${nombreEquipo} en nuestra base de datos, intente con un equipo registrado`);
+        res.status(404).send(`No encontramos a ${nombreEquipo} en nuestra base de datos, intentá con un equipo registrado.`);
         return;
     }
 
     equipos[index].nombre = nuevoNombre;
     
-    res.status(202).send(`el equipo ${nombreEquipo}, paso a llamarse ${nuevoNombre} correctamente, gracias por usar nuestro servicio.`)
+    res.status(202).send(`El equipo ${nombreEquipo}, pasó a llamarse ${nuevoNombre} correctamente, ¡gracias por usar nuestro servicio!`)
     
 })
 
@@ -124,18 +127,28 @@ function removerUnItemDeArray(array, indexARemover) {
     array.splice(indexARemover, 1)
 }
 
-app.delete('/borrarequipo/:equipoABorrar', (req, res) => {
-    const { equipoABorrar } = req.params;
-    const index = equipos.findIndex(e => e.nombre === equipoABorrar);
+function buscarEquipo(id, array) {
+    const existe = array.findIndex(equipo => equipo.id === id);
+    return existe;
+} 
 
-    if (index < 0) {
-        res.status(404).send(`El equipo ${equipoABorrar}, no se encuentra en nuestra base de datos`);
+app.delete('/borrarequipo/:idEquipoABorrar', (req, res) => {
+    const { idEquipoABorrar } = req.params;
+    
+    const index = buscarEquipo(idEquipoABorrar, equipos);
+    const nombreEquipo = equipos[index].nombre;
+
+    if (equipoExiste < 0) {
+        res.status(404).send(`El equipo ${nombreEquipo} no se encuentra en nuestra base de datos, por lo que no puede ser eliminado.`);
         return;
     }
 
+    
+    
+
     res.status(200);
     removerUnItemDeArray(equipos, index)
-    res.send(`Se elimino ${equipoABorrar} correctamente`)
+    res.send(`Se elimino ${nombreEquipo} correctamente`)
 
     
 })

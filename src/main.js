@@ -8,22 +8,30 @@ $listaEquipos.onclick = (e) => {
     }
 
     if (elemento.classList.contains('eliminar')) {
-        const equipoAEliminar = elemento.dataset.nombre;
-        eliminarEquipo(equipoAEliminar);
+        const idEquipoAEliminar = elemento.dataset.id;
+        eliminarEquipo(idEquipoAEliminar);
     }
 
     if (elemento.classList.contains('enviar-edicion')) {
         const arrayData = obtenerNuevaData(elemento);
         editarNombreEquipo(arrayData)
     }
-
-    
-
 }
 
-function eliminarEquipo(equipoAEliminar) {
+function obtenerNuevaData(botonEnviarEdicion) {
+    const padre = botonEnviarEdicion.parentNode;
+    const nombreEquipo = padre.dataset.nombre;
+    const nuevoNombre = padre.querySelector(`input`).value;
+    const nuevaData = [
+        nombreEquipo, { 'nombre': nuevoNombre }
+    ]
+
+    return nuevaData;
+}
+
+function eliminarEquipo(idEquipoAEliminar) {
     
-    fetch(`http://localhost:8080/borrarequipo/${equipoAEliminar}`, {
+    fetch(`http://localhost:8080/borrarequipo/${idEquipoAEliminar}`, {
     method: 'DELETE'
 
 })
@@ -45,42 +53,7 @@ function editarNombreEquipo(arrayData) {
     window.location.href = "http://localhost:8080/equipos";
 }
 
-function obtenerNuevaData(botonEnviarEdicion) {
-    const padre = botonEnviarEdicion.parentNode;
-    const nombreEquipo = padre.dataset.nombre;
-    const nuevoNombre = padre.querySelector(`input`).value;
-    const nuevaData = [
-        nombreEquipo, { 'nombre': nuevoNombre }
-    ]
 
-    return nuevaData;
-}
-
-// function manejarBorrar(nombreEquipo) {
-//     console.log(nombreEquipo);
-// }
-
-
-// function manejarEditar(nombreEquipo) {
-
-
-
-
-//     const nuevoNombre = document.querySelector(`#input-editar-${nombreEquipo}`).value
-
-//     const nuevaData = {
-//         'nombre': nuevoNombre
-//     }
-
-//     const $botonEnviarEdicion = document.querySelector(`#enviar-edicion-${nombreEquipo}`);
-
-//     //$botonEnviarEdicion.onclick = editarNombreEquipo(nombreEquipo, nuevaData);
-
-//     return nuevaData;
-
-
-
-// }
 
 
 
